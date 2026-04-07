@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的网站</title>
+    <style>
+       
+     *{
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body
+{
+    background: #0a2a43;
+    min-height: 1500px;
+}
+
+section
+{
+    position:relative;
+    width: 100%;
+    height: 100vh; 
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+section::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #0a2a43, transparent);
+    z-index: 10000;
+}
+
+section::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a2a43;
+    mix-blend-mode: color;
+    z-index: 10000;
+}
+
+section img
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events:none;
+}
+
+#text{
+    position: relative;
+    z-index: 1;
+    color: #f2f8f7f7;
+    font-size: 6vw;
+}
+
+#road{
+    z-index: 2;
+}
+
+        /* ===== 功能2：错位叠放画廊区域  ===== */
+        .image-container {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 35px 45px;
+            max-width: 1300px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .image-box {
+            position: relative;
+            display: block;
+            width: 260px;
+            border-radius: 28px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: all 0.35s ease;
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.25);
+            background: #fff;
+        }
+
+        /* 旋转偏移 */
+        .box-1 { transform: rotate(-3deg) translateY(8px); z-index: 5; }
+        .box-2 { transform: rotate(4deg) translateY(-10px) translateX(6px); z-index: 4; }
+        .box-3 { transform:  rotate(-5deg) translateY(12px) translateX(-8px); z-index: 6; }
+        .box-4 { transform: rotate(2deg) translateY(-5px) translateX(12px); z-index: 3; }
+
+        .image-box img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay p {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+        }
+
+        .image-box:hover .overlay {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 850px) {
+            .image-box { width: 240px; }
+            .image-box img { height: 260px; }
+            .box-1, .box-2, .box-3, .box-4 {
+                transform: rotate(0deg) translateY(0px);
+            }
+            .box-1 { transform: rotate(-2deg) translateY(5px); }
+            .box-2 { transform: rotate(3deg) translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 功能1：视差滚动区域  -->
+    <section>
+        <img src="../images/bg.jpg" alt="" id="bg">
+        <img src="../images/moon.png" alt="" id="moon">
+        <img src="../images/mountain.png" alt="" id="mountain">
+        <img src="../images/road.png" alt="" id="road">
+        <h2 id="text">My Website</h2>
+    </section>
+
+    <!-- 功能2：错位叠放画廊区域  -->
+    <div class="image-container">
+        <a href="page1.html" class="image-box box-1">
+            <img src="../images/photo1.png" alt="图片1">
+            <div class="overlay">
+                <p>洞悉·石中绿，林中我</p>
+            </div>
+        </a>
+
+        <a href="page2.html" class="image-box box-2">
+            <img src="../images/photo2.png" alt="图片2">
+            <div class="overlay">
+                <p>灵感·故事须以细枝编结</p>
+            </div>
+        </a>
+
+        <a href="page3.html" class="image-box box-3">
+            <img src="../images/photo3.png" alt="图片3">
+            <div class="overlay">
+                <p>介质·高塔应以野心筑基</p>
+            </div>
+        </a>
+
+        <a href="page4.html" class="image-box box-4">
+            <img src="../images/photo4.png" alt="图片4">
+            <div class="overlay">
+                <p>狂想·如何托举一轮理想</p>
+            </div>
+        </a>
+    </div>
+
+    <script>
+       
+        let bg = document.getElementById('bg');
+        let moon = document.getElementById('moon');
+        let mountain = document.getElementById('mountain');
+        let road = document.getElementById('road');
+        let text = document.getElementById('text');
+
+        window.addEventListener('scroll', function () {
+            let value = window.scrollY;
+
+           
+            if (moon) {
+                moon.style.transform = `translateX(calc(-${value}px + 0.5px))`;
+            }
+            
+            if (mountain) mountain.style.top = -value * 0.15 + 'px';
+            if (road) road.style.top = value * 0.15 + 'px';
+            if (text) text.style.top = value * 1 + 'px';
+        });
+    </script>
+</body>
+</html>
