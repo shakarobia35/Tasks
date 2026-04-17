@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Geek招新网站 | 加入我们</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #faf9f8;
+            color: #1e2a3e;
+            line-height: 1.5;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: #f9b233;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 16px 16px 16px 16px;
+        }
+        #top-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #top-nav li {
+            position: relative;
+        }
+        #top-nav li a {
+            display: inline-block;
+            padding: 0.6rem 4rem;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            border-radius: 16px 16px 16px 16px;
+        }
+        #top-nav li a:hover {
+            color: #e2e8f0;
+            background: #ec7106;
+            border-radius: 16px 16px 16px 16px;
+        }
+        /* 二维码下拉 */
+        #intro {
+            position: relative;
+        }
+        #QRcode {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid #ec7106;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            min-width: 150px;
+            display: none;
+            z-index: 200;
+        }
+        #intro:hover #QRcode {
+            display: block;
+        }
+        #QRcode img {
+            width: 120px;
+            height: auto;
+        }
+        #QRcode p {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #0c0f15;
+        }
+
+        /* 首页背景区 */
+        .homepage {
+            position: relative;
+            text-align: center;
+        }
+        #background-img {
+            position: relative;
+        }
+        #background-img img {
+            width: 100%;
+            display: block;
+        }
+        #geek {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            min-width: 180px;
+            transition: transform 0.3s ease;
+        }
+        #geek:hover {
+            transform: translateX(-50%) scale(1.15);
+        }
+        #geek img {
+            width: 100%;
+        }
+
+        /* 通用容器 */
+        .introduction, .about-wrapper, .contact-wrapper, .QA-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+        .introduction {
+            text-align: center;
+        }
+        #pass {
+            position: relative;
+            display: inline-block;
+        }
+        #pass-text h1 {
+            font-size: 2rem;
+            color: #062a78;
+        }
+
+        /* 介绍卡片 */
+        .introduction-wrapper {
+            padding: 2rem 1rem;
+        }
+        #text-wrapper {
+            max-width: 900px;
+            margin: 3rem auto;
+            background: #ffffff;
+            border: 3px solid #666767;
+            border-radius: 32px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.25s ease-in-out, box-shadow 0.25s ease;
+            transform-origin: center center;
+        }
+        #text-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px -8px rgba(0,0,0,0.1);
+        }
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .right {
+            float: right;
+            width: 35%;
+            margin-left: 2rem;
+            border-radius: 24px;
+            transition: transform 0.2s ease;
+        }
+        .right:hover {
+            transform: rotate(-10deg);
+        }
+        .left {
+            float: left;
+            width: 35%;
+            margin-right: 2rem;
+            border-radius: 24px;
+        }
+        #textl, #textr {
+            overflow: hidden;
+        }
+        #textl h2, #textr h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        #main-text {
+            margin-top: 1rem;
+            text-align: justify;
+        }
+        @media (max-width: 768px) {
+            .right, .left {
+                float: none;
+                width: 80%;
+                display: block;
+                margin: 0 auto 1.5rem;
+            }
+            #textl, #textr {
+                text-align: center;
+            }
+        }
+
+            
+        /* About Us 区域 */
+        .about-wrapper {
+            position: relative;
+            font-size: 0.85rem;
+            border: 6px solid #8e8e8e;
+            border-radius: 32px;
+            padding: 0 7rem 7rem 7rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: rgb(250, 249, 239)
+        }
+        
+ 
+        #center-ab {
+            font-size: 3rem;
+            font-weight: normal;
+            text-align: center;
+            margin: 0 20px 2rem;
+            color: #8f8f8f;
+        }
+        #about-box {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            padding: 0 2rem 0 5rem;
+        }
+        #about-1, #about-2, #about-3 {
+            width: 10em;
+            box-sizing: border-box;
+            padding: 1em;
+            padding-bottom: 3em;
+            background: rgb(250, 249, 239);
+            border: 4px solid #4f0a6e;
+            border-radius: 28px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        #about-1:hover, #about-2:hover, #about-3:hover {
+            transform: scale(1.05);
+        }
+        #about-1 img, #about-2 img, #about-3 img {
+            max-width: 200px;
+        }
+        /* 装饰 */
+        #hudie {
+            position: absolute;
+            bottom: 35px;
+            right: 70px;
+            width: 120px;
+            transition: transform 0.2s ease;
+        }
+        #hudie:hover {
+            transform: translateY(5px);
+        }
+        
+        #rt, #rb, #lt, #lb {
+            position: absolute;
+            pointer-events: none;
+        }
+        #rt { right: -30px; top: -10px; width: 200px; }
+        #rb { right: -30px; bottom: -10px; width: 200px;transform: scaleY(-1);}
+        #lt { left: -30px; top: -10px; width: 200px; transform: scaleX(-1);}
+        #lb { left: -30px; bottom: -10px; width: 200px; transform: rotate(180deg);}
+        /* Contact Us */
+        .contact-wrapper {
+            background: white;
+            border: 5px solid #3d8d86;
+            border-radius: 48px;
+            padding: 2rem 1.5rem;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        #center-cu {
+            font-size: 3rem;
+            font-weight: normal;
+            text-align: center;
+            margin: 0 20px 2rem;
+            color: #073e12;
+            }
+        #request {
+            background: white;
+            padding: 1.5rem 5rem 5rem 2rem;
+            margin: 1rem 6.5rem 0;
+        }
+        #request p {
+            margin: 0.8rem 0;
+        }
+        #ps {
+            font-size: 0.85rem;
+            color: #5d5c5c;
+            padding-top: 0.8rem;
+        }
+        #a-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        #a-wrapper a {
+            background: #31af7d;
+            color: white;
+            padding: 0.5rem 1.8rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        #a-wrapper a:hover {
+            background: #2d7e52;
+            color: #1b461e;
+        }
+        /* 装饰树、虫子 (简单保留位置) */
+        .contact-wrapper img {
+            position: absolute;
+            pointer-events: none;
+        }
+        #r-tree { right: -20px; bottom: 10px; width: 150px; }
+        #l-tree { left: 0; top: -20px; width: 150px; }
+        #bsl { bottom: -40px; right: 110px; width: 400px;}
+        #ladybug { bottom: -5px; left: -5px; width: 50px; }
+        #leaves { top: 50px; left: 350px; width: 60px; }
+
+        /* Q&A */
+       
+        .QA-wrapper {
+            border-radius: 48px;
+            padding: 2rem 1.5rem;
+            border: 6px solid #6ab5e8;
+            background-image: url(images/background_QA.png);
+            background-size: cover;
+            background-position: top;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+        }
+        
+        
+        #center-QA {
+            font-size: 3rem;
+            font-weight: normal;
+            text-align: center;
+            margin: 20px 2rem;
+            color: #000000;
+            
+        }
+        #QA-ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0;
+        }
+
+        #QA-ul li {
+           
+            border-radius: 10px;
+            transition: 0.2s;
+            overflow: hidden;
+        }
+        .QA-a {
+            display: block;
+            padding: 1.2rem 1.5rem;
+            font-weight: normal;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+            color: #0f172a;
+            text-decoration: none;
+            cursor: pointer;
+            
+        }
+        .QA-a:hover {
+            color: #787878;
+            transform: scale(1.05);
+        }
+        #QA-ul li p {
+            text-align: center;
+            padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+            background-color: rgba(136, 136, 137, 0.3);
+            color: #ffffff;
+            display: none;
+        }
+
+        /* Footer */
+        .footer {
+            background: #e7e7e7;
+            color: #000000;
+            text-align: center;
+            padding: 10px;
+            margin-top: 3rem;
+            font-size: 10px;
+        }
+
+        /* 返回顶部火箭 */
+        .pointer{
+            position:fixed;
+            right:50px;
+            transform:translate(-3%);
+            bottom:75px;
+            height:46px;
+            width:51px;
+            overflow:hidden;
+            z-index:1000;
+            transition:ease-in-out 3.5s,ease-out 3s}
+        .pointer div{
+            width:45px;
+            height:40px;
+            border:3px solid black;
+            position:absolute;
+            transition:all .5s;
+            border-radius:15px;
+            background:aliceblue;
+            display:flex;
+            align-items:center;
+            justify-content:center}
+        #pointer1{
+            top:0;
+            left:0
+        }
+        #pointer2{
+            top:49px;
+            left:0
+        }
+        .pointer:hover #pointer1{
+            top:-49px
+        }
+        .pointer:hover #pointer2{
+            top:0
+        }
+        .pointer i{
+            font-size:22px;
+            display:inline-block;
+            line-height:40px;
+            width:100%;
+            text-align:center;
+            margin:2% 0;
+            font-weight:800}
+        #pointer1 i{
+            font-size:30px
+        }
+        #pointer{display:none}
+        
+    </style>
+</head>
+<body>
+<div id="top"></div>
+<nav>
+    <ul id="top-nav">
+        <li id="introduction">
+            <div id="intro">
+                <a href="javascript:;" class="intro_a">Introduction <i class="fa fa-angle-down"></i></a>
+                <div id="QRcode">
+                    <img data-src="images\qrcode_1699620268564.jpg" width="80%" alt="二维码">
+                    <p>极客扫码加入Geek</p>
+                </div>
+            </div>
+        </li>
+        <li id="about"><a href="javascript:;">About Us <i class="fa fa-user"></i></a></li>
+        <li id="newthread"><a href="https://campus.new-thread.com/" target="_blank">NewThread <i class="fa fa-home"></i></a></li>
+        <li id="contact"><a href="javascript:;">Contact Us <i class="fa fa-phone"></i></a></li>
+        <li id="qa"><a href="javascript:;">Q&A <i class="fa fa-comments"></i></a></li>
+    </ul>
+</nav>
+
+<div class="homepage">
+    <div id="background-img">
+        <img data-src="images\background_Homepage.png" alt="首页背景">
+        <a href="javascript:;">
+            <div id="geek">
+                <img data-src="images\decoration_Geek.png" alt="Geek Logo">
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="introduction" id="introSection">
+    <div id="pass">
+        <img data-src="images\decoration_Transition.png" alt="过渡" width="100%">
+        <div id="pass-text">
+            <a href="javascript:;"><h1>Introduction <i class="fa fa-angle-down"></i></h1></a>
+        </div>
+    </div>
+</div>
+
+<div class="introduction-wrapper">
+    <div id="text-wrapper" class="clearfix">
+        <img class="right" data-src="images\Geek_Programmer.png" alt="程序员">
+        <div id="textl">
+            <h1>开发程序猿</h1>
+            <h2 style="color:cornflowerblue;">“Stay Hungry，Stay Foolish”</h2>
+            <p id="main-text">前端：前端开发是创建Web或app视觉界面呈现给用户的过程通过HTML，CSS及JavaScript以及衍生出来的各种技术、框架、解决方案，实现互联网产品的用户界面交互。</p>
+            <p id="main-text">后端：通常也称服务器端开发。不对用户显示,负责处理前端的请求，进行逻辑处理和数据交互。客户端: 移动应用开发是为了小型、无线计算设备编写软件的流程和程序的集合，例如智能手机或平板电脑。</p>
+        </div>
+    </div>
+    <div id="text-wrapper" class="clearfix">
+        <img class="left" data-src="images\Geek_PM.png" alt="产品&设计">
+        <div id="textr">
+            <h1>产品经理</h1>
+            <h2 style="color:violet;">"好的软件的特征是,明明没用过，但总觉得用过似的。"</h2>
+            <p id="main-text">PM是针对某一项或是某一类的产品进行规划和管理的人员。PM需要拥有缜密的产品逻辑思维，研究用户心理，负责产品的整个生命周期。PM参与产品的UI和交互设计，为设计和开发确定产品原型，能够将产品变得有个性,操作变得舒适简单、自由。PM需要一定的文档能力和沟通能力，能够在团队合作的过程中跟各个角色进行有效沟通。</p>
+        </div>
+    </div>
+    <div id="text-wrapper" class="clearfix">
+        <img class="right" data-src="images\Geek_Game.png" alt="游戏">
+        <div id="textl">
+            <h1>游戏开发</h1>
+            <h2 style="color: turquoise;">"TECH OTAKUS SAVE THE WORLD"</h2>
+            <p id="main-text">对游戏开发的热爱和追求，使我们相聚于此。涉及计算机图形学的学习，我们使用物理模拟引擎Unity开发我们所追求的世界，一个故事，一个角色，在我们的世界里改变现实，创造新的可能，我们参与，我们改变，我们创造...</p>
+        </div>
+    </div>
+    <div id="text-wrapper" class="clearfix">
+        <img class="left" data-src="images\Geek_security.png" alt="AI">
+        <div id="textr">
+            <h1>安全方向</h1>
+            <h2 style="color: lightpink;">"路漫漫其修远兮，非大毅力者不能"</h2>
+            <p id="main-text">我们主要学习Web安全和二进制安全。在Web安全中我们将学习和实践Web漏洞挖掘技术，也将探索和讨论Web安全实践的方法。在二进制安全中我们专注于分析和防御与计算机程序、系统相关的威胁，同时实践漏洞分析和修补。耐心和钻研缺一不可。</p>
+        </div>
+    </div>
+    <div id="aboutusplace"></div>
+</div>
+
+<div class="about-wrapper">
+    <img id="rt" data-src="images\decoration_Decoration.png"  ;>
+    <img id="rb" data-src="images\decoration_Decoration.png"  ;>
+    <img id="lt" data-src="images\decoration_Decoration.png"  ;>
+    <img id="lb" data-src="images\decoration_Decoration.png"  ;>
+    <a href="javascript:;"><p id="center-ab">About Us <i class="fa fa-universal-access"></i></p></a>
+    
+    
+    <div id="about-box" class="clearfix">
+        <div id="about-1">
+            <img data-src="images\about_Speech.png" alt="" width="80%">
+            <p>每周我们会举行一次技术例会，用来汇报我们的学习内容，供成员之间交流学习。</p>
+        </div>
+        <div id="about-2">
+            <img data-src="images\about_Diversity.png" alt="" width="80%">
+            <p>多元化是我们的特色。在这里，你可以拥有多种方向选择，前后端、安全、AI、产品/设计、游戏等。</p>
+        </div>
+        <div id="about-3">
+            <img data-src="images\about_Time.png" alt="" width="80%">
+            <p>耐心、毅力是我们必备的品质，每周我们会至少花30小时在实验室中。以保证技术的精进。</p>
+        </div>
+    </div>
+
+    <img id="hudie" data-src="images\decoration_Butterfly.png" alt="蝴蝶" title="保持好奇心！">
+</div>
+
+<div id="contactplace"></div>
+<div class="contact-wrapper">
+    <a href="javascript:;"><p id="center-cu">Contact Us <i class="fa fa-phone"></i></p></a>
+    <img id="r-tree" data-src="images\decoration_Tree.png" width="17%">
+    <img id="l-tree" data-src="images\decoration_TreeWithSometing.png" width="20%">
+    <img id="bsl" data-src="images\decoration_Chameleon.png" width="45%">
+    <img id="ladybug" data-src="images\decoration_Ladybug.png" width="7%" title="虽然并不是每次探索都能有满意的收获 .">
+    <img id="leaves" data-src="images\decoration_Leaves.png" width="5%">
+    <div id="request">
+        <p>•热爱计算机，具有geek精神，喜欢DIY，动手能力较强</p>
+        <p>•有编程/算法/硬件基础为佳(有作品可附上)</p>
+        <p>•有足够的空余时间，热爱思考，对事物有自己的见解</p>
+        <p id="ps">ps:非新思路统招只有通过发送邮件自我介绍后，收到邮件回执后才会被允许进群,在读学生,都可邮件到newthread_geek@outlook.com报名加入.(信中需备注个人基本信息以及意向方向,此招新活动为长期招新)</p>
+    </div>
+    <div id="a-wrapper">
+        <a id="a1" href="https://jq.qq.com/?_wv=1027&k=5H2GDXV1" target="_blank">QQ-Group <i class="fa fa-qq"></i></a>
+        <a id="a2" href="javascript:;" class="copy-email-btn">E-mail <i class="fa fa-envelope"></i></a>
+        <a id="a3" href="https://www.bilibili.com/video/BV1GJ411x7h7" target="_blank">Github <i class="fa fa-github"></i></a>
+    </div>
+</div>
+
+<div id="QAplace"></div>
+<div class="QA-wrapper">
+        <a href="javascript:;"><p id="center-QA">More Questions <i class="fa fa-comments"></i></p></a>
+        <div id="QA-list">
+            <ul id="QA-ul">
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">1.什么是Geek(极客)？Geek精神又是什么？</a>
+                 <p style="display: none;">拥有好奇之心，改变之力，爱钻研，能折腾。</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">2.招新是安排在什么时间？</a>
+                 <p style="display: none;">按照惯例，正式招新时间是在9月下旬~10月上旬，不过今年会有一些改动，笔试地
+                     点一般在9号教学楼。 如果想要了解我们，可以加入我们的QQ群，招新具体的安排/变动会在招新群通知。</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">3.我们有考核吗？考核流程是怎样的呀？</a>
+                 <p style="display: none;">嗯...我们一共有一轮笔试和两轮面试。权衡技术、经验和学习能力，第一轮是一些视野性的题目，淘汰率并不高。第二轮单独面试，
+                     根据你的笔试提出技术相关的问题、兴趣爱好、个人看法。最后一轮群面，首先问及时间分
+                     配上的问题，其次也会向你提出各种奇怪的问题。这一轮中许多题目其实并不难，也无标准答案，重在考察同学们在压力下的逻辑思维。全部通过成为预备成员啦。</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">4.考核是怎样的形式？</a>
+                 <p style="display: none;">在考核期间每人会拥有一位'长者'带你入门，学习技术与知识，交流经验与想法。完成每周的新人任务后再进行一次考核筛选
+                     后就可以成为Geek组正式成员啦！在考核期必须满足每周30个小时在实验室哦,所以考核期也不可以懈怠哦！</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">5.进入Geek组之后都有什么福利呢？   </a>
+                 <p style="display: none;">一对一的新人指引，每一个成员都有会一个mentor, 带你初入门槛，与你一同成长，组内管理较宽松,在尊重其他人的前提下可以尽情发挥自己的个性。
+                     打破平淡，与同样疯狂的人把疯狂的idea实现，磨砺耐性、培养思维、成就梦想。Lab设备/网络资源充足，闲暇之余也有组织活动。更有许多的故事等你来听~</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">6.进入团队会影响我的日常学习吗？</a>
+                 <p style="display: none;">你要知道大学是一个可以自由安排自己学习生活的地方。如果你想在上课之余充实自己、激励自己，最好的方法就是和比自己更优秀的人在一起。团队不缺优秀的
+                     人，而我们也期待同样优秀的你，让我们一起前进！小组里也有不少保研, 考研的前辈们, 大部分都能找到一个平衡点, 而且团队的经历对你日后读研, 工作都大有裨益。</p>
+                </li>
+                <li>
+                 <a id="QA-a" class="QA-a" href="javascript:;">7.老师以及学长学姐们的期望是什么?</a>
+                 <p style="display: none;">我们希望你有很强的自学能力，同时关注新事物、新技术，喜欢挑战，逻辑性强，善于和各种文化的人合作.“每个人都可以做自己想做的事情，每个人的方向不一样。
+                     如果你想做产品或有不错的 idea，那么就可以找志同道合的人一起合作。”</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div id="footer1">[prentending this is true <i class="fa fa-desktop"></i>]</div>
+    <div id="footer2">Copyright©2002-2026 Geek All Right Reserved 招新长期有效</div>
+    <div id="footer3">来看一看瞧一瞧了啊，买不了吃亏买不了上当了啊，来全场6元全场6元了啊</div>
+</div>
+
+<div class="pointer">
+    <div id="pointer1"><p><i class="fa fa-chevron-circle-up"></i></p></a></div>
+    <div id="pointer2"><a href="javascript:;"><p><i class="fa fa-rocket"></i></p></a></div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 1. 图片懒加载 ----------
+        const imgElements = document.querySelectorAll('img[data-src]');
+        function loadImg(img) {
+            const src = img.getAttribute('data-src');
+            if (src && !img.src) {
+                img.src = src;
+                img.removeAttribute('data-src');
+            }
+        }
+        function lazyLoadAll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const winHeight = window.innerHeight;
+            for (let img of imgElements) {
+                if (img.getAttribute('data-src')) {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < winHeight + 200 && rect.bottom > -100) {
+                        loadImg(img);
+                    }
+                }
+            }
+        }
+        window.addEventListener('scroll', lazyLoadAll);
+        window.addEventListener('resize', lazyLoadAll);
+        lazyLoadAll();  // 立即加载可视区图片
+
+        // ---------- 2. 导航栏平滑滚动 ----------
+        function scrollToElement(selector) {
+            const target = document.querySelector(selector);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        // Introduction 滚动到 .introduction
+        const introLink = document.querySelector('#introduction a');
+        if (introLink) {
+            introLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToElement('.introduction');
+            });
+        }
+        // About Us 滚动到 .about-wrapper
+        const aboutLink = document.querySelector('#about a');
+        if (aboutLink) {
+            aboutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToElement('.about-wrapper');
+            });
+        }
+        // Contact Us 滚动到 .contact-wrapper
+        const contactLink = document.querySelector('#contact a');
+        if (contactLink) {
+            contactLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToElement('.contact-wrapper');
+            });
+        }
+        // Q&A 滚动到 .QA-wrapper
+        const qaLink = document.querySelector('#qa a');
+        if (qaLink) {
+            qaLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToElement('.QA-wrapper');
+            });
+        }
+
+        // Introduction 里的大标题点击也滚动到自身
+        const introTitle = document.querySelector('#pass-text a');
+        if (introTitle) {
+            introTitle.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToElement('.introduction');
+            });
+        }
+
+        // ---------- 3. Q&A 折叠/展开 ----------
+        const qaItems = document.querySelectorAll('#QA-ul li');
+        qaItems.forEach(item => {
+            const questionLink = item.querySelector('.QA-a');
+            const answer = item.querySelector('p');
+            if (questionLink && answer) {
+                // 初始答案隐藏
+                answer.style.display = 'none';
+                questionLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const isVisible = answer.style.display === 'block';
+                    answer.style.display = isVisible ? 'none' : 'block';
+                });
+            }
+        });
+
+        // ---------- 4. 邮箱复制 (点击 E-mail 链接) ----------
+        const emailBtn = document.querySelector('#a2');
+        const emailAddress = 'newthread_geek@outlook.com';
+        if (emailBtn) {
+            emailBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // 现代复制方法
+                navigator.clipboard.writeText(emailAddress).then(() => {
+                    alert('Geek的邮箱已经复制到剪贴板了！♡(*´∀｀*)人(*´∀｀*)♡');
+                }).catch(() => {
+                    // 降级方案
+                    const textarea = document.createElement('textarea');
+                    textarea.value = emailAddress;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('Geek的邮箱已经复制到剪贴板了！♡(*´∀｀*)人(*´∀｀*)♡');
+                });
+            });
+        }
+
+        // ---------- 5. 火箭返回顶部 ----------
+        const rocket = document.getElementById('pointer2');
+        if (rocket) {
+            rocket.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // ---------- 6. 滚动时显示/隐藏火箭按钮 ----------
+        const pointerDiv = document.querySelector('.pointer');
+        function toggleRocket() {
+            if (window.scrollY > 500) {
+                pointerDiv.style.display = 'block';
+            } else {
+                pointerDiv.style.display = 'none';
+            }
+        }
+        window.addEventListener('scroll', toggleRocket);
+        toggleRocket();
+
+        // 保证所有图片在没有 data-src 时不会出错
+        console.log("页面已加载，保持好奇心！");
+    })();
+</script>
+</body>
+</html>
