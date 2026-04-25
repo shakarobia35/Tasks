@@ -12,7 +12,8 @@
 - [CSS 学习笔记](https://github.com/shakarobia35/Tasks/blob/main/CSS%20Note.md)
 - [JavaScript 学习笔记](https://github.com/shakarobia35/Tasks/blob/main/JavaScript%20Note.md)
 - [页面编后感](https://github.com/shakarobia35/Tasks/blob/main/%E9%A1%B5%E9%9D%A2%E7%BC%96%E5%90%8E%E6%84%9F.md)
-- [我的网页](https://shakarobia35.github.io/my-website/)
+- [我的网页(改良版)](https://shakarobia35.github.io/my-website/)
+- [我的网页(原版)](https://shakarobia35.github.io/Tasks/my-website-main/)
 ## 阶段四 【承上启下&大显身手】
 - [geek招新网站复刻](https://shakarobia35.github.io/Tasks/geekzhaoxinwangzhanfuke/)
 - [页面编后感](https://github.com/shakarobia35/Tasks/blob/main/%E7%BD%91%E9%A1%B5%E7%BC%96%E5%90%8E%E6%84%9F.md)
