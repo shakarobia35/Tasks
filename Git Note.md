@@ -77,21 +77,24 @@
    点击A仓库Code键，选择SSH下载其文件夹(如果是压缩包最好解压缩)，再点击B仓库Add files上传文件夹。
 
 #### 对文件进行修改
-   + `git branch`查看本地分支名(查看是main还是master)；
-   + `cat readme.txt`显示文件内容；
+```markdown
+    `git branch`查看本地分支名(查看是main还是master)；
+    `cat readme.txt`显示文件内容；
+```
    ##### **回溯过去的代码信息**
-    > + `git diff`查看修改内容;
-    > + `git log`显示从最近到最远的提交日志,`git log --name-status -1`查看最近一次提交中包含的文件；
-    > + `git status`检查本地与远程的同步状态；
-   
+   ```markdown
+      `git diff`查看修改内容;
+      `git log`显示从最近到最远的提交日志,`git log --name-status -1`查看最近一次提交中包含的文件；
+      `git status`检查本地与远程的同步状态；
+   ```
    ##### **版本回退**
-    >  + `git reset --hard HEAD^`将版本退回到上个版本的已提交状态，`--soft`是退回到未提交状态，`--mixed`会回退到上个版本已添加但未提交的状态;`git reset --hard 1094a`指定回到1094a这个版本；
+     `git reset --hard HEAD^`将版本退回到上个版本的已提交状态，`--soft`是退回到未提交状态，`--mixed`会回退到上个版本已添加但未提交的状态;`git reset --hard 1094a`指定回到1094a这个版本；
    
    ##### **恢复未来版本**
-    > + `git reflog`记录每一次命令，可以据此查找commit id，再用reset恢复;
-    > + `git push origin master:main`将本地的master分支推送到远程的main分支；
-    > + `git pull origin master --allow-unrelated-histories`拉取远程仓库的内容并合并；
-    >
+     `git reflog`记录每一次命令，可以据此查找commit id，再用reset恢复;
+     `git push origin master:main`将本地的master分支推送到远程的main分支；
+     `git pull origin master --allow-unrelated-histories`拉取远程仓库的内容并合并；
+    
      ```
      git add readme.txt /把文件添加到暂存区
      git commit -m "说明" /把暂存区所有内容提交到Git自建分支master
