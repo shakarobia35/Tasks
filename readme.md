@@ -19,3 +19,4 @@
 - [页面编后感](https://github.com/shakarobia35/Tasks/blob/main/%E7%BD%91%E9%A1%B5%E7%BC%96%E5%90%8E%E6%84%9F.md)
 ## 阶段五【了解更多语⾔的魅⼒ —— CSS 3 和 JavaScript】
 - [前端demo产出](https://github.com/shakarobia35/Tasks/tree/main/%E5%89%8D%E7%AB%AF)
+- [游戏入口](https://github.com/shakarobia35/Tasks/tree/main/%E5%89%8D%E7%AB%AF/%E8%8B%8F%E4%B8%B9%E7%9A%84%E6%B8%B8%E6%88%8F%EF%BC%88%E4%BC%A0%E8%AF%B4%E4%B9%8B%E4%B8%8B%E4%BD%8E%E9%85%8D%E6%8A%84%E8%A2%AD%E7%89%88%EF%BC%89)
