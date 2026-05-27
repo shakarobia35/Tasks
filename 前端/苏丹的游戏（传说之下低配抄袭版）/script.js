@@ -401,9 +401,9 @@ Game.prototype._restart = function () {
     this.domCache.battleWrapper.style.display = 'none';
     this.domCache.storyBox.style.display = 'block';
     this.domCache.hintText.style.display = 'block';
-    this.domCache.gameTitle.textContent = '* 命运跑团 *';
+    this.domCache.gameTitle.textContent = '* 苏丹的游戏 *';
     this.domCache.diceDisplay.textContent = '?';
-    this.domCache.diceResult.textContent = '投掷 D20 确定命运';
+    this.domCache.diceResult.textContent = '无人知晓命运会归向何处';
     this.domCache.hitCountSpan.textContent = '0';
     this.domCache.hpBarFill.style.width = '100%';
     this.domCache.diceDisplay.classList.remove('rolling');
