@@ -1,3 +1,5 @@
+
+
 # JavaScript
 
 ## 目录
@@ -499,30 +501,76 @@ closureFunc(); // 输出：我是内部变量
 
 · 封装私有变量：外部无法直接访问函数内部的变量，只能通过闭包提供的接口操作。
 
+> 此处声明了createCounter()函数，函数里有count这个变量和包含该变量的内部函数increment()、get(),然后再定义（初始化）counter是createCounter()返回值，counter可以直接访问内部函数，但不能跳过内部函数直接访问私有变量count。
+
 ```javascript
 function createCounter() {
   let count = 0;
   return {
     increment() { count++; },
-    get() { return count; }
+    get() { return count; }//也可以写成get:()=>count
   };
 }
 const counter = createCounter();
-counter.increment();
-console.log(counter.get()); // 1
+counter.increment(); // 1
+console.log(counter.get());
 // 无法直接访问 count
 ```
+
+> 假设creatCounter()只有`let count=0;`这一句而没有其他访问/引用该私有变量的内部函数（未进行闭包），我们就永远无法从外部访问到这个私有变量（这个变量会在函数执行完`const counter = creatCounter()`被销毁）。
 
 · 保持状态：事件回调、定时器、异步操作中保留当前状态。
 
 ❗注意事项
 
 · 闭包会使外部函数的变量一直驻留在内存中，不会被垃圾回收。过度使用可能导致内存泄漏。
-· 闭包中的变量是引用传递，注意循环中常见的问题（例如用var定义循环变量时，闭包拿到的是最终值）。解决方法：用let或立即执行函数（IIFE）。
+· 闭包中的变量是**引用传递**，注意循环中常见的问题（例如用var定义循环变量时，闭包拿到的是最终值）。解决方法：用let或立即执行函数（IIFE）。
 
 ### 4.正则表达式
 
-用于匹配、检索、替换字符串中的模式。
+用于匹配、检索、替换字符串中的模式，相当于一个搜索比对器。
+
+#### 字符串方法：
+
+· **search() **检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串，并返回子串的<span style="color:red">起始位置</span>;
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+
+<p>搜索字符串 "Runoob", 并显示匹配的起始位置：</p>
+<button onclick="myFunction()">点我</button>
+<p id="demo"></p>
+<script>
+function myFunction() {
+    var str = "Visit me!"; 
+    var n = str.search("me");
+    document.getElementById("demo").innerHTML = n;
+}
+//输出结果：6
+//子字符串：me，子串起始位置：6
+</script>
+
+</body>
+</html>
+```
+
+· **replace()** 在字符串中用一些字符串**替换**另一些字符串，或替换一个与正则表达式匹配的子串。
+
+```javascript
+var str = document.getElementById("demo").innerHTML; 
+var txt = str.replace(/me/i,"she");
+//输出结果：Visit she!
+```
+
+- 
+
+#### 使用RegExp对象
 
 > · 字面量：/pattern/flags
 > · 构造函数：new RegExp('pattern', 'flags')
@@ -536,6 +584,14 @@ const re2 = new RegExp('ab+c', 'i');
 
 · test(str)：返回布尔值，是否匹配。
 · exec(str)：返回匹配结果数组或null。
+
+```javascript
+/e/.test("the best things in life are free!")
+//含有e故输出true
+/e/.exec("the best things in life are free!")
+//含有e故输出e
+```
+
 · str.match(regex)、str.replace(regex, replacer)、str.split(regex)。
 
 ```javascript
@@ -546,31 +602,105 @@ console.log(str.match(/\d+/));     // ['123']
 console.log(str.replace(/\d+/, '456')); // Hello 456 world
 ```
 
-常用标志：g(全局匹配)、i(忽略大小写)、m(多行匹配)、u(Unicode)、y(粘性匹配)。
+❗<span style="color:orange">常用标志：</span>
 
-**错误处理**
+- g(全局匹配)、i(忽略大小写)、m(多行匹配)、u(Unicode)、y(粘性匹配)。
+
+- [abc]（字符）,[0-9]（任何0到9数字）,(x|y)（任何以 | 分隔的选项）。
+- \d（数字）,\s（空白字符）,\b（匹配单词边界）,\uxxxx（以十六进制数 xxxx 规定的 Unicode 字符）。
+- 量词：n+匹配任何包含至少一个 *n* 的字符串;n*零个或多个 ;n?零个或一个.
+
+#### **错误处理**
 
 使用try...catch...finally捕获异常。也可以手动抛出错误throw new Error('自定义错误')。
 
-```javascript
-try {
-  // 可能出错的代码
-  let result = riskyOperation();
-  console.log(result);
-} catch (error) {
-  // 出错时执行
-  console.error('捕获到错误：', error.message);
-} finally {
-  // 无论是否出错都会执行（例如释放资源）
-  console.log('清理工作');
-}
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+<p>不管输入是否正确，输入框都会再输入后清空。</p>
+<p>请输入 5 ~ 10 之间的数字：</p>
 
-function riskyOperation() {
-  throw new Error('出错了');
+<input id="demo" type="text">
+<button type="button" onclick="myFunction()">点我</button>
+
+<p id="p01"></p>
+
+<script>
+function myFunction() {
+  var message, x;
+  message = document.getElementById("p01");
+  message.innerHTML = "";
+  x = document.getElementById("demo").value;
+  try { 
+    if(x == "") throw "值是空的";
+    if(isNaN(x)) throw "值不是一个数字";
+    x = Number(x);
+    if(x > 10) throw "太大";
+    if(x < 5) throw "太小";
+  }
+  catch(err) {
+    message.innerHTML = "错误: " + err + ".";
+  }
+  finally {
+    document.getElementById("demo").value = "";
+  }
 }
+</script>
+
+</body>
+</html>
 ```
 
 内置错误类型：Error、SyntaxError、ReferenceError、TypeError、RangeError等。
+
+❗try...catch是”事后急救“，处理运行时发生的异常（此种异常无法预测，是不可控操作，如JSON解析等），而if/防御性编程（typeof、optional chaining等）是‘’事先预防‘’，预测边界情况，判断数组、对象是否存在，浏览器API兼容性检查。
+
+例如，对此种报错可使用if.
+
+```javascript
+//try...catch
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<script>
+var txt="";
+function message(){
+	try {
+		adddlert("Welcome guest!");
+	}
+	catch(err) {
+		txt="本页有一个错误。\n\n";
+		txt+="错误描述：" + err.message + "\n\n";
+		txt+="点击确定继续。\n\n";
+		alert(txt);
+	}
+}
+</script>
+</head>
+<body>
+
+<input type="button" value="查看消息" onclick="message()" />
+
+</body>
+</html>
+
+//if
+function message() {
+  // 事前预防：如果 adddlert 不存在，直接弹友好提示，不报错
+  if (typeof adddlert === 'function') {
+    adddlert("Welcome guest!");
+  } else {
+    alert("当前功能暂未开放，请稍后重试"); 
+  }
+}
+```
 
 ### 5.事件
 
@@ -578,8 +708,39 @@ JavaScript 通过事件模型实现与用户的交互。常见事件：click、l
 
 #### 绑定：
 
-· HTML属性：`<button onclick="fn()">`
-· DOM属性：`element.onclick = fn`
+· HTML属性：
+
+```javascript
+①替换节点内容
+<button//▲html元素
+onclick//▲事件
+    ="getElementById('demo').innerHTML=Date()">
+//▲找到<p id="demo">节点，把它的内部内容替换成 Date() 返回的字符串
+现在的时间是?</button>
+//此处更推荐innerContent,因为innerHTML 会把字符串里的标签符号（< >）解析成 HTML 元素，而 textContent 只会当纯文本处理。
+②替换自身元素
+<button onclick="this.innerHTML=Date()">
+    //使用 this.innerHTML修改自身元素内容(修改的是button) 
+现在的时间是?</button>
+③外置函数（①变体）
+<button onclick="displayDate()">点这里</button>
+<script>
+    function displayDate(){
+        document.getElementById("demo").innerHTML=Date();
+    }
+</script>
+```
+
+| 事件        | 描述                                 |
+| ----------- | ------------------------------------ |
+| onchange    | HTML 元素改变                        |
+| onclick     | 用户点击 HTML 元素                   |
+| onmouseover | 鼠标指针移动到指定的元素上时发生     |
+| onmouseout  | 用户从一个 HTML 元素上移开鼠标时发生 |
+| onkeydown   | 用户按下键盘按键                     |
+| onload      | 浏览器已完成页面的加载               |
+
+· DOM属性：`element.onclick = fn`（在DOM API详细讲述）
 · addEventListener（推荐）：可绑定多个，支持事件捕获/冒泡。
 
 ```javascript
