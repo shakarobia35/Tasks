@@ -134,71 +134,6 @@ let f=e; //e,f共用同一块地址。适用于存储空间较大的情况。
 
 null(有值)，undefined(无值)
 
-### ❓Promise & async / await 异步编程
-
-#### Promise对象
-
-是存放某个未来才会结束的事件。
-
-**对象的状态不受外界影响（<u>除了pending,fulfilled,rejected三种状态，其他手法无法改变promise</u>），且一旦状态改变(p→f;p→r)，就不会再变，任何时候都可以得到这个结果**。
-
-`Promise`也有一些缺点。首先，无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。第三，当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
-
-```javascript
-const promise = new Promise(function(resolve, reject) {
-/*
-resolve:将Promise对象的状态从“未完成”变为“成功”（pending→resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；
-reject：将`Promise`对象的状态从“未完成”变为“失败”（pending→rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
-*/
-  if (/* 异步操作成功 */){
-    resolve(value);
-  } else {
-    reject(error);
-  }
-});
-promise.then(function(value) {
-  // success
-}, function(error) {
-  // failure
-});
-/*
-then可接受两个回调函数作为参数。第一个回调函数是Promise对象的状态变为resolved时调用，第二个回调函数是Promise对象的状态变为rejected时调用。这两个函数都是可选的，不一定要提供。它们都接受Promise对象传出的值作为参数。
-*/
-```
-
-
-
-#### async / await
-
-async / await 是 Promise 的语法糖，让异步代码写起来像同步代码。
-
-· async 函数返回一个 Promise。
-· await 只能在 async 函数内部使用，会暂停函数执行，等待 Promise resolve，然后返回结果；如果 Promise reject，则抛出异常（可用 try...catch 捕获）。
-
-```javascript
-async function fetchUser() {
-  try {
-    const response = await fetch('https://api.example.com/user/1');
-    const user = await response.json();
-    console.log(user);
-  } catch (error) {
-    console.error('请求失败', error);
-  }
-}
-fetchUser();
-
-// 并发请求可用 Promise.all
-async function fetchMultiple() {
-  const [user, posts] = await Promise.all([
-    fetch('/user').then(res => res.json()),
-    fetch('/posts').then(res => res.json())
-  ]);
-  console.log(user, posts);
-}
-```
-
-❗await 会阻塞其后的代码（但不会阻塞外部，因为 async 函数本身返回 Promise，外部会继续执行）。错误处理建议用 try...catch 或在调用处用 .catch()。
-
 
 
 ## 严格模式
@@ -568,8 +503,6 @@ var txt = str.replace(/me/i,"she");
 //输出结果：Visit she!
 ```
 
-- 
-
 #### 使用RegExp对象
 
 > · 字面量：/pattern/flags
@@ -711,37 +644,69 @@ JavaScript 通过事件模型实现与用户的交互。常见事件：click、l
 · HTML属性：
 
 ```javascript
-①替换节点内容
+①替换节点内容（HTML管行为）
 <button//▲html元素
 onclick//▲事件
     ="getElementById('demo').innerHTML=Date()">
-//▲找到<p id="demo">节点，把它的内部内容替换成 Date() 返回的字符串
+		//▲找到<p id="demo">节点，把它的内部内容替换成 Date() 返回的字符串
 现在的时间是?</button>
+
 //此处更推荐innerContent,因为innerHTML 会把字符串里的标签符号（< >）解析成 HTML 元素，而 textContent 只会当纯文本处理。
 ②替换自身元素
 <button onclick="this.innerHTML=Date()">
-    //使用 this.innerHTML修改自身元素内容(修改的是button) 
+    	//使用 this.innerHTML修改自身元素内容(修改的是button) 
 现在的时间是?</button>
 ③外置函数（①变体）
+//只能用于<p id="demo">，若想让<p id="demo1">更改，必须再写一个函数
+<p id="demo"></p>
 <button onclick="displayDate()">点这里</button>
 <script>
     function displayDate(){
         document.getElementById("demo").innerHTML=Date();
     }
 </script>
+//可用于任何标签.可以给<p>/<div>...都写上onclick="...",只要有innerHTML属性就可一次性全部更改
+<h1 onclick="changetext(this)">点击文本!</h1>
+<script>
+function changetext(id)
+{
+    id.innerHTML="Ooops!";
+}
+</script>
+④替换节点内容（JS管行为,③变体）
+<button id="myBtn">点这里</button>
+<script>
+document.getElementById("myBtn").onclick=function(){displayDate()};
+function displayDate(){
+    document.getElementById("demo").innerHTML=Date();
+}
+</script>
 ```
 
-| 事件        | 描述                                 |
-| ----------- | ------------------------------------ |
-| onchange    | HTML 元素改变                        |
-| onclick     | 用户点击 HTML 元素                   |
-| onmouseover | 鼠标指针移动到指定的元素上时发生     |
-| onmouseout  | 用户从一个 HTML 元素上移开鼠标时发生 |
-| onkeydown   | 用户按下键盘按键                     |
-| onload      | 浏览器已完成页面的加载               |
+| 事件           | 描述                                            |
+| -------------- | ----------------------------------------------- |
+| onchange       | HTML 元素改变                                   |
+| onclick        | 用户点击 HTML 元素                              |
+| onmouseover    | 鼠标指针移动到指定的元素上时发生                |
+| onmouseout     | 用户从一个 HTML 元素上移开鼠标时发生            |
+| onmousedown/up | 用户按下/释放鼠标按钮（换成key是键盘按键）      |
+| onload         | 浏览器已完成页面的加载,在用户进入页面时被触发。 |
+| onunload       | 在用户离开页面时被触发。                        |
 
 · DOM属性：`element.onclick = fn`（在DOM API详细讲述）
-· addEventListener（推荐）：可绑定多个，支持事件捕获/冒泡。
+· addEventListener：用于向指定元素添加事件句柄。同元素可绑定多个事件（不会被覆盖），支持事件捕获/冒泡。（移除该方法添加的事件句柄要使用removeEventListener() 方法）
+
+*element*.addEventListener(*event, function, useCapture*);
+
+> 第一个参数是事件的类型 (如 "click" 或 "mousedown"). 
+>
+> 第二个参数是事件触发后调用的函数。 
+>
+> 第三个参数是个布尔值用于描述事件是冒泡(false)还是捕获(true)。该参数是可选的。
+
+· removeEventListener：移除。
+
+*element*.removeEventListener(*"mousemove", myFunction*);
 
 ```javascript
 const btn = document.querySelector('#myBtn');
@@ -749,6 +714,12 @@ btn.addEventListener('click', (event) => {
   console.log('按钮被点击', event.target);
 });
 ```
+
+将 `<p>`元素插入到 `<div>` 元素中，用户点击 `<p>` 元素：
+
+在  *冒泡* 中，内部元素的事件会先被触发，然后再触发外部元素，即：` <p> `元素的点击事件先触发，然后会触发 `<div>`元素的点击事件。
+
+在  *捕获* 中，外部元素的事件会先被触发，然后才会触发内部元素的事件，即： `<div>` 元素的点击事件先触发 ，然后再触发 `<p>`元素的点击事件。
 
 #### 事件流：
 
@@ -795,39 +766,58 @@ DOM（Document Object Model）将HTML/XML文档表示为树形结构，JavaScrip
 
 #### 常用节点类型：Document、Element、Text、Attribute、Comment。
 
-获取元素：
+**获取元素**：
 
-> · document.getElementById('id') → 单个元素
-> · document.getElementsByClassName('class') → HTMLCollection（动态）
-> · document.getElementsByTagName('div') → HTMLCollection
-> · document.querySelector('.class') → 第一个匹配的元素
-> · document.querySelectorAll('.class') → NodeList（静态）
+> ·document.getElementById('id') → 改变单个元素内容
+>
+> ·document.getElementsByClassName('class') → HTMLCollection（动态）
+> ·document.getElementsByTagName('div') → HTMLCollection
+> ·document.querySelector('.class') → 第一个匹配的元素
+> ·document.querySelectorAll('.class') → NodeList（静态）
 
-操作内容：
+例：
+
+> ·document.getElementById("image").src="landscape.jpg"→改变img元素src属性
+>
+> ·document.getElementById("p2").style.color="blue"→改变元素的样式
+>
+> ·document.getElementById("myBtn").onclick=function(){displayDate()};→使用HTML DOM向HTML元素分配事件onclick
+
+**操作内容**：
 
 > · element.textContent：纯文本内容
 > · element.innerHTML：HTML内容（⚠️注意XSS风险）
 > · element.setAttribute(name, value) / getAttribute(name)
 > · element.classList.add('class')、remove()、toggle()
 
-创建和添加元素：
+**创建和添加元素**：
+
+· appendChild() 添加新元素到尾部
+
+· insertBefore() 加在开始位置
 
 ```javascript
 const newDiv = document.createElement('div');
 newDiv.textContent = '我是新来的';
 document.body.appendChild(newDiv);
+
+var element = document.getElementById("div1");
+var child = document.getElementById("p1");
+element.insertBefore(para, child);
 ```
 
-删除元素：parent.removeChild(child) 或 element.remove()（现代方法）。
+**删除元素**：parent.removeChild(child) 或 element.remove()（现代方法）。
 
-修改样式：
+**替换元素**：replaceChild()
+
+**修改样式**：
 
 > · element.style.property = 'value'（驼峰命名，如backgroundColor）
 > · 操作类：element.className 或 classList
 
 事件监听已在“事件”部分说明。
 
-遍历DOM树：
+**遍历DOM树**：
 
 > · 父节点：parentNode、parentElement
 > · 子节点：childNodes（含文本节点）、children（仅元素）
@@ -884,22 +874,168 @@ window.addEventListener('scroll', throttle(() => {
 > · 防抖：连续触发只执行最后一次（如搜索框输入停止后才请求）。
 > · 节流：固定频率执行（如滚动时每隔一段时间检查一次）。
 
+### ❓Promise & async / await 异步编程
+
+异步任务会在当前存在同步任务都执行完毕以后再被触发。
+
+#### Promise对象
+
+是存放某个未来才会结束的事件。<span style="color:red">用于解决将复杂的嵌套式异步结构书写为一种更接近于同步的写法。</span>promise本身是一个类，或者构造函数。
+
+创建的promise对象，实际上标记了在new Promise中所设计的代码功能中的异步任务，最终的处理结果会通过回调方式返还到对象的位置上（好比，在promise中调用resolve/reject函数，最终返回的状态是不同的，也就顺势影响了对象的状态），那么在此之后我们可以利用这个对象进行后续处理，从而避免大量代码嵌套。
+
+```javascript
+const p1 =new Promise((resolve,reject)=>{
+resolve()
+})
+```
+
+promise对象也提供了一些功能:
+
+```javascript
+①then，传递成功数据，可接受回调函数，可接受两个参数（执行reslove则触发then第一个函数，reject则触发第二个。若无第二个函数，则寻找外部的catch）
+/*resolve('任务成功！')*/
+p1.then(data=>{
+	console.log(data)
+})
+//输出 任务成功！；在promise选择reject的时候报错。
+②catch,失败调用
+/*reject('任务失败!')*/
+.catch(err=>{
+    console.log(err)
+})
+
+//若希望then内的异步任务完成后还能接新的异步任务，可添加
+return new Promise((resolve,reject)=>{
+	resolve('任务成功！')
+    reject('任务失败！')
+})
+
+实例：
+const p1 =new Promise((resolve,reject)=>{
+resolve('任务1成功！')
+})
+p1.then(data=>{
+	console.log(data)
+    return new Promise((resolve,reject)=>{
+		resolve('任务2成功！')
+	})
+})
+.then(data=>{
+	console.log(data)
+})//处理上面这个then返回的promise对象
+
+//若要对第一和第二给异步任务的then分别给予不同的catch，
+const p1 =new Promise((resolve,reject)=>{
+reject('任务1失败。')
+})
+p1.then(data=>{
+	console.log(data)
+    return new Promise((resolve,reject)=>{
+		resolve('任务2成功！')
+	}，err=>{
+        console.log('任务1失败了。')
+    //失败应当返回一个值，意味着整个then没有返回值，则会默认返回成功promise对象，导致后续的then不会被触发。（希望后续都失败）解决方法：
+    ①返回一个新的promise,且该promise是失败状态
+    ②抛出异常
+    thow new Error('任务1失败了。')
+})
+.then(data=>{
+	console.log(data)
+}，err=>{
+      console.log('任务2失败了。')
+      })
+```
+
+`Promise`也有一些缺点。首先，无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。第三，当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+#### async / await
+
+async / await 是 Promise 的语法糖，它追求一个与同步写法完全一致的书写方式。
+
+步骤：
+
+1，准备一个返回promise对象的函数
+
+```javascript
+function asyncTask (){
+    return new Promise((resolve,reject) =>{
+        //一些关键代码...
+        const isSuccess = true
+        if(isSuccess){
+            resolve('任务2成功！其处理结果...')
+        }else{
+            reject('任务2失败。其处理结果...')
+        }
+    }
+}
+```
+
+2，为使用await的函数添加async
+
+```javascript
+async function main (){
+    await asyncTask()
+    //可像同步代码一样执行
+}
+```
+
+
+
+· async 函数返回一个 Promise。
+· await 只能在 async 函数内部使用，会暂停函数执行，等待 Promise resolve，然后返回结果；如果 Promise reject，则抛出异常（可用 try...catch 捕获）。
+
+```javascript
+async function fetchUser() {
+  try {
+    const response = await fetch('https://api.example.com/user/1');
+    const user = await response.json();
+    console.log(user);
+  } catch (error) {
+    console.error('请求失败', error);
+  }
+}
+fetchUser();
+
+// 并发请求可用 Promise.all
+async function fetchMultiple() {
+  const [user, posts] = await Promise.all([
+    fetch('/user').then(res => res.json()),
+    fetch('/posts').then(res => res.json())
+  ]);
+  console.log(user, posts);
+}
+```
+
+❗await 会阻塞其后的代码（但不会阻塞外部，因为 async 函数本身返回 Promise，外部会继续执行）。错误处理建议用 try...catch 或在调用处用 .catch()。
+
 ## Ajax
 
 允许在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页。
 
 #### ·原生方式：XMLHttpRequest
 
+get只能发送纯文本，而post可以发送各种文件（需要标注文件格式）。
+
 ```javascript
 const xhr = new XMLHttpRequest();
-xhr.open('GET', 'https://api.example.com/data', true); // true表示异步
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === 4 && xhr.status === 200) {
-    console.log(JSON.parse(xhr.responseText));
+xhr.open('GET', 'https://api.example.com/get', true); // GET是发送请求的一种方式。接着的网址是想要请求的服务器地址。true表示异步
+xhr.send();//发还请求的项目资源，即响应
+xhr.onreadystatechange = function() {	//接收
+  if (xhr.readyState === 4 && xhr.status === 200) {	//监测请求发送的状态。4表示完成，200表示OK，两者表示响应完成且成功
+    console.log(JSON.parse(xhr.responseText));//响应文本
   }
 };
-xhr.send();
+在地址后加？和请求信息，称为请求参数，格式是名=值的形式。eg:https://api.example.com/get?name=ycx&age=18
+除了GET之外还可发生POST请求，即发给服务端让其完成一些操作
+const xhr = new XMLHttpRequest();
+xhr.open('POST', 'https://api.example.com/post', true); 
+xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+xhr.send('name=ycx&age=18');
+...
 ```
+
+***更简便的方式：axios**
 
 #### ·现代方式：Fetch API（返回Promise，更简洁）
 
@@ -926,8 +1062,6 @@ fetch('https://api.example.com/submit', {
 ```
 
 #### ·处理跨域：后端设置CORS头，或使用JSONP（仅GET）、代理服务器等。
-
-
 
 ## 使用 JavaScript 实现 Web 端调试
 
@@ -978,7 +1112,60 @@ window.onerror = function(message, source, lineno, colno, error) {
 };
 ```
 
-## 暂且搁置
+## 尝试
 
-name属性
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>练习</title>
+<style>
+	*{
+		margin:0;
+		background:silver;
+		padding:0;
+		box-sizing:border-box;
+	}
+	body{
+		display:grid;
+		grid-template-columns:repeat(4,1fr);
+		min-height:100vh;
+	}
+	.button{
+		padding:20px;
+		border:1px;
+		text-align:center;
+		cursor:pointer;
+	}
+</style>
+</head>
+<body>
+<div class="demo">
+	<div class="button">
+		<p id="contain">测试myButton函数</p>
+		<button id="mybutton">点击</button>
+	</div>
+	</div>
+<script>
+const Btn =document.getElementById('mybutton');
+let step = 0;
+Btn.addEventListener('click',function(x){
+	x.stopPropagation();
+	const p = document.getElementById('mybutton');
+	if (step===0){
+		p.innerHTML=Date();
+		step=1;
+	}else if(step===1){
+		p.innerHTML='已完成！';
+		step=2;
+	}else{
+		p.innerHTML='重置！';
+		step=0;
+	}
+});
+</script>
+
+</body>
+```
 
