@@ -1169,3 +1169,70 @@ Btn.addEventListener('click',function(x){
 </body>
 ```
 
+## 一些补充
+
+### 绘制
+
+const canvas = document.getElementById('canvas');//画布
+const ctx = canvas.getContext('2d')//画笔
+
+### 补充
+
+- object.previous/nextElementSibling 改objext前/后一个的内容
+
+- setInterval间隔重复
+
+- Array.from（）可将伪数组转换成真数组
+
+- object.assign可实现对象浅拷贝，Object.assign()中可传多个参数，第一个参数是生成的新对象，后面剩余参数复制到新对象中，用于对象拷贝和**合并**(const objC=Object.assign({},objA,objB))。
+
+  ```
+  const objB=Object.assign({},objA) 
+  objB.name='a' 
+  console.log(objA,objB)
+  ```
+
+  这里常量objB可以被修改属性是因为常量定义了其引用，即变量本身，可以随意增添对象的属性而不能重新为对象赋值。
+  const修饰的似乎ibjB 也就是说zhegobjB指向的内存块地址不能变  不是指内存块中的变量值不能变
+  class 首先在class A写constructor构造方法，要给这个构造方法（）里传入一些必须的参赛（name,age)
+
+- this.name=name属性指定。用的时候，const a1 = new A()表示要基于这个类创建类的实例并给它分配一个属性（比如给A后面的括号里赋值ycx）
+
+- 继承功能 
+
+``` 
+	class B extends A{
+	constructor(name,age,gender){
+		super(name,age)//调用父类的constructor,将A中的两个属性（name，age）也在B里生成
+        this.gender = gender
+	}
+    sayHello(){//子类方法设置
+    
+    }
+}
+```
+
+### js可视化
+
+javascript runtime:调用栈、WebAPI、任务队列、微任务队列、事件循环
+调用栈管理程序的执行。
+
+```javascript
+console.log("one");①
+console.log("two");②
+
+function logThree(){③
+	console.log("three");④
+}
+
+function logThreeAndFour(){⑤
+	logThree();⑥
+	console.log("four")⑦
+}
+logThreeAndFour();⑧
+调用顺序：①->②->⑧->⑤->⑥->③->④->⑦
+
+一些WebAPI允许将长时间运行的任务卸载到浏览器，调用API是在启动这种卸载。暴露这种异步功能的WebAPI要么是基于回调的，要么是基于promise的。
+回调：
+eg:地理位置API暴露getCurrentPosition
+ 
